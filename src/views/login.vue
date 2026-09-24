@@ -95,6 +95,7 @@ const loginRules = {
 }
 
 const codeUrl = ref("")
+// 为true表示登入中，按钮会转圈圈，不让点击
 const loading = ref(false)
 // 验证码开关
 const captchaEnabled = ref(true)
@@ -107,6 +108,13 @@ watch(route, (newRoute: any) => {
 }, { immediate: true })
 
 function handleLogin(): void {
+  // 表示表单验证通过才执行下面代码
+  // 1、proxy 表示当前组件的实例
+  // 2、$refs.loginRef 表示获取上面表单 loginRef 的实例
+  // 3、validate 表示验证表单 loginRules
+  // 4、valid 表示表单验证是否通过
+  // 5、如果 valid 为 true，则表示表单验证通过，则执行下面代码
+  // 6、如果 valid 为 false，则表示表单验证不通过，则不执行下面代码
   proxy.$refs.loginRef.validate((valid: boolean) => {
     if (valid) {
       loading.value = true
@@ -123,7 +131,10 @@ function handleLogin(): void {
       }
       // 调用action的登录方法
       userStore.login(loginForm.value).then(() => {
+        // 登入成功
         const query = route.query
+
+        // 登入成功，跳转页面
         const otherQueryParams = Object.keys(query).reduce((acc: Record<string, any>, cur) => {
           if (cur !== "redirect") {
             acc[cur] = query[cur]
@@ -132,6 +143,7 @@ function handleLogin(): void {
         }, {})
         router.push({ path: redirect.value || "/", query: otherQueryParams })
       }).catch(() => {
+        // 登入失败
         loading.value = false
         // 重新获取验证码
         if (captchaEnabled.value) {

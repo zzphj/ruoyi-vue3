@@ -60,7 +60,7 @@ export const constantRoutes = [
   {
     path: '',
     component: Layout,
-    redirect: '/index',
+    redirect: '/index', // 重定向到 /index
     children: [
       {
         path: '/index',
@@ -83,6 +83,7 @@ export const constantRoutes = [
     redirect: 'noredirect',
     children: [
       {
+        // :activeTab表示它是一个动态参数，?表示这是一个可选参数，可以传和不传的
         path: 'profile/:activeTab?',
         component: () => import('@/views/system/user/profile/index.vue'),
         name: 'Profile',

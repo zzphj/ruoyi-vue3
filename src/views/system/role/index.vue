@@ -303,6 +303,7 @@ const { queryParams, form, rules } = toRefs(data)
 /** 查询角色列表 */
 function getList() {
   loading.value = true
+  // 通过 proxy 获取全局方法挂载
   listRole(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
     roleList.value = response.rows
     total.value = response.total

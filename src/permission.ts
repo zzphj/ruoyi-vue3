@@ -18,9 +18,15 @@ const isWhiteList = (path: string): boolean => {
   return whiteList.some((pattern: string) => isPathMatch(pattern, path))
 }
 
+// 每次 router 路由之前执行 
 router.beforeEach(async (to, from) => {
   NProgress.start()
+  // 是否有token
   if (getToken()) {
+    // 下面这行代码的意思是：如果 to.meta.title 存在，则设置标题
+    // if (to.meta.title) {
+    //   useSettingsStore().setTitle(to.meta.title as string)
+    // }
     to.meta.title && useSettingsStore().setTitle(to.meta.title as string)
     const isLock = useLockStore().isLock
     if (to.path === '/login') {

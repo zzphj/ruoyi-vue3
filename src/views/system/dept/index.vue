@@ -192,6 +192,7 @@ const { queryParams, form, rules } = toRefs(data)
 function getList() {
   loading.value = true
   listDept(queryParams.value).then(response => {
+   // 将数据转换为树形结构
     deptList.value = proxy.handleTree(response.data, "deptId")
     recordOriginalOrders(deptList.value)
     loading.value = false

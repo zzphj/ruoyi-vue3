@@ -5,7 +5,7 @@ import Layout from '@/layout/index.vue'
 import ParentView from '@/components/ParentView/index.vue'
 import InnerLink from '@/layout/components/InnerLink/index.vue'
 
-// 匹配views里面所有的.vue文件
+// 加载views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
 
 const usePermissionStore = defineStore(
@@ -70,9 +70,11 @@ function filterAsyncRouter(asyncRouterMap: any[], lastRouter = false, type = fal
       } else if (route.component === 'InnerLink') {
         route.component = InnerLink
       } else {
+        // 业务页
         route.component = loadView(route.component)
       }
     }
+    // 子类还有子类，则递归处理
     if (route.children != null && route.children && route.children.length) {
       route.children = filterAsyncRouter(route.children, route, type)
     } else {
@@ -113,6 +115,7 @@ export function filterDynamicRoutes(routes: any[]): any[] {
   return res
 }
 
+// 根据字符串路径，加载组件
 export const loadView = (view: string): any => {
   let res
   for (const path in modules) {

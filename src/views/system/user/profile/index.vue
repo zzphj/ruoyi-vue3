@@ -78,6 +78,7 @@ interface UserProfileState {
   postGroup: string
 }
 
+// 先定义一个state用户对象，给上面使用，下面再调用接口跟新它，可以保持数据的响应式
 const state = reactive<UserProfileState>({
   user: {} as SysUser,
   roleGroup: '',

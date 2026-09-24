@@ -7,6 +7,7 @@ import { isHttp, isEmpty } from "@/utils/validate"
 import useLockStore from '@/store/modules/lock'
 import defAva from '@/assets/images/profile.jpg'
 
+// 定义对象的结构，有没有它其实都不响应代码的运行，定义它只是能够更加清晰的知道这个对象的属性，以便更好的使用
 interface UserState {
   token: string | undefined
   id: string | number
@@ -17,8 +18,9 @@ interface UserState {
   permissions: string[]
 }
 
+// defineStore 是pinia的api，用于定义store
 const useUserStore = defineStore(
-  'user',
+  'user', // 模块名，可以理解为java中的bean名，全项目需要保持唯一
   {
     state: (): UserState => ({
       token: getToken(),
@@ -29,6 +31,15 @@ const useUserStore = defineStore(
       roles: [],
       permissions: []
     }),
+    getters: {
+      getToken: (state) => state.token,
+      getUserId: (state) => state.id,
+      getUserName: (state) => state.name,
+      getUserNickName: (state) => state.nickName,
+      getUserAvatar: (state) => state.avatar,
+      getUserRoles: (state) => state.roles,
+      getUserPermissions: (state) => state.permissions
+    },
     actions: {
       // 登录
       login(userInfo: { username: string; password: string; code: string; uuid: string }) {
@@ -52,6 +63,7 @@ const useUserStore = defineStore(
         return new Promise((resolve, reject) => {
           getInfo().then(res => {
             const user = res.user
+            // avatar字段为头像地址，如果为空，则使用默认头像
             let avatar = user.avatar || ''
             if (!isHttp(avatar)) {
               avatar = (isEmpty(avatar)) ? defAva : import.meta.env.VITE_APP_BASE_API + avatar

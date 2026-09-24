@@ -20,6 +20,7 @@ import { AppMain, Navbar, Settings, TagsView } from './components'
 import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
 
+// 模版属性
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme)
 const sidebar = computed(() => useAppStore().sidebar)
@@ -37,6 +38,7 @@ const classObj = computed(() => ({
 const { width, height } = useWindowSize()
 const WIDTH = 992 // refer to Bootstrap's responsive design
 
+// 监听device的变化
 watch(() => device.value, () => {
   if (device.value === 'mobile' && sidebar.value.opened) {
     useAppStore().closeSideBar({ withoutAnimation: false })
