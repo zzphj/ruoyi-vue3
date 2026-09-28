@@ -16,6 +16,7 @@ export * from "./system/post";
 export * from "./system/dict";
 export * from "./system/config";
 export * from "./system/notice";
+export * from "./system/document";
 
 // monitor 模块
 export * from "./monitor/cache";
